@@ -17,10 +17,9 @@ SRC=es
 TRG=en
 workingdir=$(pwd)
 datadir=$workingdir/input/all
-mkdir -p $datadir
 bindir=$workingdir/bin
 modeldir=$workingdir/nematus-model
-mkdir -p $modeldir
+mkdir -p $modeldir $datadir
 
 # number of merge operations.
 # Network vocabulary should be slightly larger (to include characters),
@@ -33,7 +32,6 @@ mosesdecoder=$tooldir/mosesdecoder
 subword_nmt=$tooldir/subword-nmt
 # path to nematus ( https://www.github.com/rsennrich/nematus )
 nematus=/home/jjm/tools/nematus
-bindir=$(pwd)/bin
 # tokenize
 for fld in test tune train; do
     for ext in $SRC $TRG; do
@@ -109,5 +107,6 @@ for fld in test tune train; do
 
     # build network dictionary
     $nematus/data/build_dictionary.py \
- 	$datadir/$fld.bpe.$SRC $datadir/train.bpe.$TRG
+ 	$datadir/$fld.bpe.$SRC \
+	$datadir/$fld.bpe.$TRG
 done
